@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>PyScript MQTT WebApp</title>
+
+  <!-- PyScript -->
+  <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css">
+  <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+
+  <!-- MQTT.js -->
+  <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+</head>
+
+<body>
+  <h1>IoT WebApp (PyScript + MQTT)</h1>
+
+  <p>Temperature: <span id="temp">--</span> °C</p>
+
+  <py-script>
+from js import document
+
+def update_temp(value):
+    document.getElementById("temp").innerText = value
+  </py-script>
+
+  <script>
+    const client = mqtt.connect("wss://broker.hivemq.com:8000/mqtt");
+
+    client.on("connect", () => {
+      console.log("Connected to MQTT");
+      client.subscribe("caest/iot/temp");
+    });
+
+    client.on("message", (topic, message) => {
+      const data = JSON.parse(message.toString());
+      pyscript.interpreter.globals.get("update_temp")(data.temp);
+    });
+  </script>
+
+</body>
+</html>

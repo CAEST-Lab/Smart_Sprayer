@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "D:/SoilSen_Station_V3"
+		},
+		{
+			"name": "ESP32_SoilSen_V3",
+			"path": "D:/SoilSen_Station_V3/ESP32_SoilSen_V3"
+		}
+	],
+	"settings": {}
+}
