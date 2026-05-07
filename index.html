@@ -1,15 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>PyScript MQTT WebApp</title>
+  <title>Smart Sprayer WebApp</title>
 
-  <!-- PyScript -->
-  <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css">
-  <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+  <!-- PyScript CSS -->
+  <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.csscript defer src="https:///pyscript.js
 
   <!-- MQTT.js -->
-  <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+  <script src="https://t/dist/mqtt.min.js
 </head>
 
 <body>
@@ -17,6 +16,7 @@
 
   <p>Temperature: <span id="temp">--</span> °C</p>
 
+  <!-- ✅ PyScript ต้องอยู่ใน tag นี้ -->
   <py-script>
 from js import document
 
@@ -28,7 +28,7 @@ def update_temp(value):
     const client = mqtt.connect("wss://broker.hivemq.com:8000/mqtt");
 
     client.on("connect", () => {
-      console.log("Connected to MQTT");
+      console.log("MQTT connected");
       client.subscribe("caest/iot/temp");
     });
 
