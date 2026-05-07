@@ -1,23 +1,99 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <title>PyScript Hello Smart IoT</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Dashboard V1.0</title>
+    
+    <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css">
+    <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
 
-  <!-- PyScript CSS -->
-  <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css">
-
-  <!-- PyScript JS -->
-  <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; background-color: #f0f2f5; padding: 20px; }
+        h1 { color: #1a73e8; margin-bottom: 30px; }
+        .dashboard { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-bottom: 20px; }
+        .card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); min-width: 160px; }
+        .sensor-val { font-size: 2rem; font-weight: bold; color: #202124; margin: 10px 0; }
+        .status-label { font-size: 1.2rem; font-weight: bold; padding: 5px 10px; border-radius: 8px; display: block; margin-bottom: 10px; }
+        .status-on { background-color: #e6f4ea; color: #1e8e3e; }
+        .status-off { background-color: #fce8e6; color: #d93025; }
+        .btn { background-color: #1a73e8; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; transition: 0.3s; width: 100%; }
+        .btn:hover { background-color: #174ea6; }
+    </style>
 </head>
-
 <body>
-  <h1>PyScript Demo</h1>
 
-  <!-- ✅ PyScript -->
-  <py-script>
-print("Hello Smart IoT")
-  </py-script>
+    <h1>My Dashboard V1.0</h1>
+
+    <div class="dashboard">
+        <div class="card">
+            <div style="color: #5f6368;">AirTemp</div>
+            <div id="temp-display" class="sensor-val">-- °C</div>
+        </div>
+        <div class="card">
+            <div style="color: #5f6368;">Air Humidity</div>
+            <div id="hum-display" class="sensor-val">-- %</div>
+        </div>
+    </div>
+
+    <div class="dashboard">
+        <div class="card">
+            <h3>Light 1</h3>
+            <span id="status-1" class="status-label status-off">OFF</span>
+            <button id="btn-1" class="btn" py-click="handle_click">Switch 1</button>
+        </div>
+        <div class="card">
+            <h3>Light 2</h3>
+            <span id="status-2" class="status-label status-off">OFF</span>
+            <button id="btn-2" class="btn" py-click="handle_click">Switch 2</button>
+        </div>
+        <div class="card">
+            <h3>Light 3</h3>
+            <span id="status-3" class="status-label status-off">OFF</span>
+            <button id="btn-3" class="btn" py-click="handle_click">Switch 3</button>
+        </div>
+        <div class="card">
+            <h3>Light 4</h3>
+            <span id="status-4" class="status-label status-off">OFF</span>
+            <button id="btn-4" class="btn" py-click="handle_click">Switch 4</button>
+        </div>
+    </div>
+
+    <script type="py">
+        import random
+        import asyncio
+        from pyscript import document
+
+        # ฟังก์ชันสุ่มค่า Sensor
+        def update_sensors():
+            temp = random.randint(26, 32)
+            hum = random.randint(40, 85)
+            document.querySelector("#temp-display").innerText = f"{temp} °C"
+            document.querySelector("#hum-display").innerText = f"{hum} %"
+
+        # ฟังก์ชัน Loop สำหรับรันทุก 1 วินาที
+        async def sensor_loop():
+            while True:
+                update_sensors()
+                await asyncio.sleep(1)  # รอ 1 วินาที (1000ms)
+
+        def handle_click(event):
+            button_id = event.target.id
+            light_num = button_id.split("-")[-1]
+            status_element = document.querySelector(f"#status-{light_num}")
+            
+            if status_element.innerText == "OFF":
+                status_element.innerText = "ON"
+                status_element.classList.remove("status-off")
+                status_element.classList.add("status-on")
+            else:
+                status_element.innerText = "OFF"
+                status_element.classList.remove("status-on")
+                status_element.classList.add("status-off")
+
+        # เรียกใช้งาน Loop แบบ Async
+        asyncio.ensure_future(sensor_loop())
+    </script>
 
 </body>
 </html>
